@@ -1,0 +1,36 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `fn_acumulado`( id_cliente_ INT) RETURNS decimal(8,2)
+BEGIN
+	DECLARE acumulado_ DECIMAL(8,2);
+	DECLARE descontado_ DECIMAL(8,2);
+    DECLARE monto_total_dscto DECIMAL(8,2);
+select sum(monto) INTO acumulado_ from tb_det_acumulado
+  where id_cliente=id_cliente_ and flg_detalle=1;
+  
+  select sum(monto) INTO descontado_ from tb_det_acumulado
+  where id_cliente=id_cliente_ and flg_detalle=2;
+  
+  set monto_total_dscto = acumulado_ - descontado_;
+  
+  RETURN  monto_total_dscto;
+END
+
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `fn_acumulado_by_dni`( num_documento_ CHAR(8)) RETURNS decimal(8,2)
+BEGIN
+	DECLARE acumulado_ DECIMAL(8,2);
+	DECLARE descontado_ DECIMAL(8,2);
+    DECLARE monto_total_dscto DECIMAL(8,2);
+    DECLARE id_cliente_ INT;
+    
+    select id_cliente into id_cliente_ from tb_cliente where num_documento = num_documento_;
+    
+select sum(monto) INTO acumulado_ from tb_det_acumulado
+  where id_cliente=id_cliente_ and flg_detalle=1;
+  
+  select sum(monto) INTO descontado_ from tb_det_acumulado
+  where id_cliente=id_cliente_ and flg_detalle=2;
+  
+  set monto_total_dscto = acumulado_ - descontado_;
+  
+  RETURN  monto_total_dscto;
+END

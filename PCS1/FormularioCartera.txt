@@ -1,0 +1,322 @@
+{
+    "availableLanguageIds": [
+        "en_US",
+        "es_ES"
+    ],
+    "defaultLanguageId": "en_US",
+    "fields": [
+        {
+            "label": {
+                "en_US": "Perfiles",
+                "es_ES": "Perfiles"
+            },
+            "options": [
+                {
+                    "value": "0",
+                    "label": {
+                        "en_US": "Sin perfil",
+                        "es_ES": "Sin perfil"
+                    }
+                },
+                {
+                    "value": "1",
+                    "label": {
+                        "en_US": "Defensivo",
+                        "es_ES": "Defensivo"
+                    }
+                },
+                {
+                    "value": "2",
+                    "label": {
+                        "en_US": "Conservador",
+                        "es_ES": "Conservador"
+                    }
+                },
+                {
+                    "value": "3",
+                    "label": {
+                        "en_US": "Altamente conservador",
+                        "es_ES": "Altamente conservador"
+                    }
+                },
+                {
+                    "value": "4",
+                    "label": {
+                        "en_US": "Moderado",
+                        "es_ES": "Moderado"
+                    }
+                },
+                {
+                    "value": "5",
+                    "label": {
+                        "en_US": "Agresivo",
+                        "es_ES": "Agresivo"
+                    }
+                }
+            ],
+            "predefinedValue": {
+                "en_US": [
+                    "[\"\"]"
+                ],
+                "es_ES": [
+                    "[\"\"]"
+                ]
+            },
+            "style": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "tip": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "dataType": "string",
+            "indexType": "keyword",
+            "localizable": true,
+            "multiple": false,
+            "name": "Perfiles",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "select"
+        },
+        {
+            "label": {
+                "en_US": "URL Imagen",
+                "es_ES": "URL Imagen"
+            },
+            "predefinedValue": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "style": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "tip": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "dataType": "string",
+            "indexType": "text",
+            "localizable": true,
+            "name": "URLImagen",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "textarea"
+        },
+        {
+            "label": {
+                "en_US": "Riesgo",
+                "es_ES": "Riesgo"
+            },
+            "predefinedValue": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "style": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "tip": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "dataType": "string",
+            "indexType": "keyword",
+            "localizable": true,
+            "name": "Riesgo",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "text"
+        },
+        {
+            "label": {
+                "en_US": "Moneda",
+                "es_ES": "Moneda"
+            },
+            "options": [
+                {
+                    "value": "1",
+                    "label": {
+                        "en_US": "SOLES",
+                        "es_ES": "SOLES"
+                    }
+                },
+                {
+                    "value": "2",
+                    "label": {
+                        "en_US": "DÓLARES",
+                        "es_ES": "DÓLARES"
+                    }
+                }
+            ],
+            "predefinedValue": {
+                "en_US": [
+                    "[\"\"]"
+                ],
+                "es_ES": [
+                    "[\"\"]"
+                ]
+            },
+            "style": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "tip": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "dataType": "string",
+            "indexType": "keyword",
+            "localizable": true,
+            "multiple": false,
+            "name": "Moneda",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "select"
+        },
+        {
+            "label": {
+                "en_US": "Tipo de producto",
+                "es_ES": "Tipo de producto"
+            },
+            "predefinedValue": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "style": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "tip": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "dataType": "string",
+            "indexType": "keyword",
+            "localizable": true,
+            "name": "TipoDeProducto",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "text"
+        },
+        {
+            "label": {
+                "en_US": "Rentabilidad esperada",
+                "es_ES": "Rentabilidad esperada"
+            },
+            "predefinedValue": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "style": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "tip": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "dataType": "string",
+            "indexType": "keyword",
+            "localizable": true,
+            "name": "RentabilidadEsperada",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "text"
+        },
+        {
+            "label": {
+                "en_US": "Plazo recomendado",
+                "es_ES": "Plazo recomendado"
+            },
+            "predefinedValue": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "style": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "tip": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "dataType": "string",
+            "indexType": "keyword",
+            "localizable": true,
+            "name": "PlazoRecomendado",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "text"
+        },
+        {
+            "label": {
+                "en_US": "Monto mínimo",
+                "es_ES": "Monto mínimo"
+            },
+            "predefinedValue": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "style": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "tip": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "dataType": "string",
+            "indexType": "keyword",
+            "localizable": true,
+            "name": "MontoMinimo",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "text"
+        },
+        {
+            "label": {
+                "en_US": "Monto máximo",
+                "es_ES": "Monto máximo"
+            },
+            "predefinedValue": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "style": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "tip": {
+                "en_US": "",
+                "es_ES": ""
+            },
+            "dataType": "string",
+            "indexType": "keyword",
+            "localizable": true,
+            "name": "MontoMaximo",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "text"
+        }
+    ]
+}

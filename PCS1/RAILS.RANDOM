@@ -1,0 +1,76 @@
+ require 'open-uri'
+        require 'pp'
+        request_uri = 'http://localhost/CLS_puente_PHP/'
+        request_query = ''
+        url = "#{request_uri}#{request_query}"
+
+                  # Actually fetch the contents of the remote URL as a String.
+       open(url, :read_timeout => 45)
+	   
+	   
+	   require 'sqlite3'
+
+           db = SQLite3::Database.new('test.db')
+
+           rows = db.execute <<-SQL
+                     create table users(
+                      id int,
+                      name varchar(30)
+                    );
+                   SQL
+
+           puts rows
+           puts rows.inspect
+		   
+		   
+		           @arrCabecera = [
+        '210',
+        'This is a test'
+        ]
+        cabecera = @arrCabecera.join("|")
+
+
+          File.open('F:/rails/demo.txt', 'w:ANSI') do |f1|
+            f1.write cabecera.gsub('}{', '}, {').to_s
+          end
+
+
+
+        link = URI.parse("http://localhost/CLS_puente_PHP/")
+        request = Net::HTTP::Get.new(link.path)
+        response = Net::HTTP.start(link.host, link.port) {|http|
+          http.read_timeout = 100 #Default is 60 seconds
+          http.request(request)
+        }
+
+
+       def say_hello(name)
+          "Hello, " + name
+       end
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	     #Lista facturas por ID
+        def listaFacturas(documentID)
+            begin
+
+                id = documentID
+                db = SQLite3::Database.open "test.db"
+                stm = db.prepare "SELECT * FROM file_ where NAME=:id"
+                rs = stm.execute id
+                rs.each do |row|
+                    puts row.join "\s"
+                end
+
+            rescue SQLite3::Exception => e
+                puts "Exception occurred"
+                puts e
+            ensure
+                stm.close if stm
+                db.close if db
+            end
+        end

@@ -1,0 +1,36 @@
+### Entrust
+inteligo-sab-app-api/inteligo-configuration-entrust/
+
+
+
+ Vía Telefónica: Llame al 630 3333, opción 1
+ 
+ 
+ N00089456
+ 
+us-cdbr-east.cleardb.com
+bc2ac47829c36b
+db3387fc
+ 
+heroku config --app
+ 
+ 
+66666666
+Inteligo2019
+ 
+http://www.inteligo-sab.com:8080/web/guest/home
+ 
+2019-1 
+20febrero
+27-28 cursos habiles y turno de matriculo
+28-1marzo
+4inicio
+ 
+105
+ 
+Certia2019$$
+ 
+ 
+ 
+ 
+ 

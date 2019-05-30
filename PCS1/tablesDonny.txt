@@ -1,0 +1,44 @@
+CREATE TABLE `tb_cliente` (
+  `id_cliente` int(11) NOT NULL AUTO_INCREMENT,
+  `num_documento` char(8) DEFAULT NULL,
+  `nombres` varchar(45) DEFAULT NULL,
+  `ape_pat` varchar(45) DEFAULT NULL,
+  `ape_mat` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `num_celular` varchar(45) DEFAULT NULL,
+  `id_referido` int(11) DEFAULT NULL,
+  `auth_pass` varchar(250) DEFAULT NULL,
+  `num_estado` int(11) DEFAULT '1',
+  `id_role` int(11) DEFAULT '2' COMMENT '1 = ADMIN\n2 = CLIENTE',
+  PRIMARY KEY (`id_cliente`),
+  UNIQUE KEY `num_documento_UNIQUE` (`num_documento`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1
+
+
+CREATE TABLE `tb_det_acumulado` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_servicio` int(11) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
+  `flg_detalle` int(11) DEFAULT '1' COMMENT '1:Acumula descuento, 2:Aplica descuento',
+  `monto` decimal(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1
+
+CREATE TABLE `tb_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `des_role` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1
+
+
+
+CREATE TABLE `tb_service` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cliente` int(11) NOT NULL,
+  `id_estilista` int(11) DEFAULT NULL,
+  `descripcion` varchar(250) DEFAULT NULL,
+  `precio` decimal(8,2) DEFAULT NULL,
+  `aplica_descuento` int(11) DEFAULT '1' COMMENT '1:SI, 2:NO',
+  `fecha` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`,`id_cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1

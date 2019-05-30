@@ -1,0 +1,267 @@
+CREATE TABLE `tb_cliente` (
+  `id_cliente` int(11) NOT NULL AUTO_INCREMENT,
+  `num_documento` char(8) DEFAULT NULL,
+  `nombres` varchar(45) DEFAULT NULL,
+  `ape_pat` varchar(45) DEFAULT NULL,
+  `ape_mat` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `num_celular` varchar(45) DEFAULT NULL,
+  `id_referido` int(11) DEFAULT NULL,
+  `auth_pass` varchar(250) DEFAULT NULL,
+  `num_estado` int(11) DEFAULT '1',
+  `id_role` int(11) DEFAULT '2' COMMENT '1 = ADMIN\n2 = CLIENTE',
+  PRIMARY KEY (`id_cliente`),
+  UNIQUE KEY `num_documento_UNIQUE` (`num_documento`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+
+CREATE TABLE `tb_det_acumulado` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_servicio` int(11) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
+  `flg_detalle` int(11) DEFAULT '1' COMMENT '1:Acumula descuento, 2:Aplica descuento',
+  `monto` decimal(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `tb_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `des_role` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `tb_service` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cliente` int(11) NOT NULL,
+  `id_estilista` int(11) DEFAULT NULL,
+  `descripcion` varchar(250) DEFAULT NULL,
+  `precio` decimal(8,2) DEFAULT NULL,
+  `aplica_descuento` int(11) DEFAULT '1' COMMENT '1:SI, 2:NO',
+  `fecha` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`,`id_cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+
+/*Usuario admin*/
+INSERT INTO `tb_cliente`(`num_documento`, `nombres`, `ape_pat`, `ape_mat`, `email`, `num_celular`, `id_referido`, `auth_pass`, `num_estado`, `id_role`) VALUES ("45381933","Roy","Cespedes","Portocarrero","rcportocarrero@gmail.com","987351755",null,"$2y$10$KotPgBd7U1HcClRdOR50oOioMa20k7L2ml/2YPaUvOt.GPq9cyXB.",1,1);
+/*Usuario estilistas*/
+INSERT INTO `tb_cliente`(`num_documento`, `nombres`, `ape_pat`, `ape_mat`, `email`, `num_celular`, `id_referido`, `auth_pass`, `num_estado`, `id_role`) VALUES ("45381934","Donny","Veneco","Lans","rcportocarrero2@gmail.com","987351755",null,"$2y$10$KotPgBd7U1HcClRdOR50oOioMa20k7L2ml/2YPaUvOt.GPq9cyXB.",1,3);
+INSERT INTO `tb_cliente`(`num_documento`, `nombres`, `ape_pat`, `ape_mat`, `email`, `num_celular`, `id_referido`, `auth_pass`, `num_estado`, `id_role`) VALUES ("45381935","Juan","Veneco","Lans","rcportocarrero2@gmail.com","987351755",null,"$2y$10$KotPgBd7U1HcClRdOR50oOioMa20k7L2ml/2YPaUvOt.GPq9cyXB.",1,3);
+INSERT INTO `tb_cliente`(`num_documento`, `nombres`, `ape_pat`, `ape_mat`, `email`, `num_celular`, `id_referido`, `auth_pass`, `num_estado`, `id_role`) VALUES ("45381936","Pedro","Veneco","Lans","rcportocarrero2@gmail.com","987351755",null,"$2y$10$KotPgBd7U1HcClRdOR50oOioMa20k7L2ml/2YPaUvOt.GPq9cyXB.",1,3);
+/*Usuario cliente*/
+INSERT INTO `tb_cliente`(`num_documento`, `nombres`, `ape_pat`, `ape_mat`, `email`, `num_celular`, `id_referido`, `auth_pass`, `num_estado`, `id_role`) VALUES ("45381937","Pietro","Cespedes","Portocarrero","rcportocarrero@gmail.com","987351755",null,"$2y$10$KotPgBd7U1HcClRdOR50oOioMa20k7L2ml/2YPaUvOt.GPq9cyXB.",1,2);
+
+
+
+tiempocr_nextlvl
+i!hp.8RS13
+T13mp0cr34t1v0
+
+
+/*============================*/
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `fn_acumulado`( id_cliente_ INT) RETURNS decimal(8,2)
+BEGIN
+	DECLARE acumulado_ DECIMAL(8,2);
+	DECLARE descontado_ DECIMAL(8,2);
+    DECLARE monto_total_dscto DECIMAL(8,2);
+select sum(monto) INTO acumulado_ from tb_det_acumulado
+  where id_cliente=id_cliente_ and flg_detalle=1;
+  
+  select sum(monto) INTO descontado_ from tb_det_acumulado
+  where id_cliente=id_cliente_ and flg_detalle=2;
+  
+  set monto_total_dscto = acumulado_ - descontado_;
+  
+  RETURN  monto_total_dscto;
+END
+
+/*=========================*/
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `fn_acumulado_by_dni`( num_documento_ CHAR(8)) RETURNS decimal(8,2)
+BEGIN
+	DECLARE acumulado_ DECIMAL(8,2);
+	DECLARE descontado_ DECIMAL(8,2);
+    DECLARE monto_total_dscto DECIMAL(8,2);
+    DECLARE id_cliente_ INT;
+    
+    select id_cliente into id_cliente_ from tb_cliente where num_documento = num_documento_;
+    
+select sum(monto) INTO acumulado_ from tb_det_acumulado
+  where id_cliente=id_cliente_ and flg_detalle=1;
+  
+  select sum(monto) INTO descontado_ from tb_det_acumulado
+  where id_cliente=id_cliente_ and flg_detalle=2;
+  
+  set monto_total_dscto = acumulado_ - descontado_;
+  
+  RETURN  monto_total_dscto;
+END
+
+/*========================*/
+
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `next_lvl`.`tb_service_AFTER_INSERT` AFTER INSERT ON `tb_service` FOR EACH ROW
+BEGIN
+	DECLARE in_acumulaDscto INT;
+    DECLARE in_id_cliente INT;
+    DECLARE in_id_referido INT;
+    DECLARE in_precio DECIMAL(3,2);
+    DECLARE in_dni_referido CHAR(8);
+    
+    
+    SET in_acumulaDscto = NEW.aplica_descuento;
+    SET in_precio = NEW.precio*0.05;
+    
+    IF in_acumulaDscto = 1 THEN
+		
+        set in_id_cliente = NEW.id_cliente;
+        
+        insert into tb_det_acumulado (id_servicio,id_cliente,flg_detalle,monto) 
+        values (NEW.id,NEW.id_cliente,1,in_precio);
+        
+        select id_referido into in_dni_referido from tb_cliente where id_cliente=in_id_cliente and num_estado=1;
+        
+        IF in_dni_referido <> 0 then
+			select id_cliente into in_id_referido from tb_cliente where num_documento=in_dni_referido and num_estado=1;
+            
+            insert into tb_det_acumulado (id_servicio,id_cliente,flg_detalle,monto) 
+        values (NEW.id,in_id_referido,1,in_precio);
+        
+        end if;
+        
+    END IF;
+END
+
+/*============================*/
+
+DELIMITER $$
+CREATE PROCEDURE `newService`(
+IN in_num_doc_estilista CHAR(8),
+IN in_num_doc_cliente CHAR(8),
+IN in_descripcion VARCHAR(250),
+IN in_precio DECIMAL(8,2),
+IN in_acumula_dscto INT,
+IN in_usa_dscto INT,
+IN in_monto_dscto DECIMAL(8,2) 
+)
+BEGIN
+	DECLARE _id_estilista char(8);
+    DECLARE _id_cliente char(8);
+    DECLARE _id_service INT;
+    DECLARE _monto_acumulado DECIMAL(8,2);  
+    
+    if in_num_doc_estilista is null or in_num_doc_estilista = '' then
+		select -1 as 'id', 'Por favor ingrese un número de documento de estilista válido.' as 'msg';
+    end if;
+    
+	if in_num_doc_cliente is null or in_num_doc_cliente = '' then
+		select -1 as 'id', 'Por favor ingrese un número de documento de estilista válido.' as 'msg';
+    end if;
+
+	if in_descripcion is null or in_descripcion = '' then
+		select -1 as 'id', 'Por favor ingrese una descripción válida.' as 'msg';
+    end if;
+    
+    if in_precio is null or in_precio = '' then
+		select -1 as 'id', 'Por favor ingrese un precio válido.' as 'msg';
+    end if;
+    
+    
+    select id_cliente into _id_estilista from tb_cliente where num_documento=in_num_doc_estilista  and id_role=3;
+    select id_cliente into _id_cliente from tb_cliente where num_documento=in_num_doc_cliente  and id_role=2;
+    
+    if _id_cliente is null then
+		select -1 as 'id', 'El cliente aún no se encuentra registrado, por favor registrarlo.' as 'msg';
+    end if;
+    
+    /*Si usa descuento se inserta con flag 2 como descuento*/
+    IF in_usa_dscto = 1 THEN
+    
+		SELECT fn_acumulado(_id_cliente) into _monto_acumulado;
+		IF in_monto_dscto > _monto_acumulado THEN
+			SELECT -1 as 'id','El monto de descuento no puede ser mayor al acumulado.' as 'msg';
+        else
+			insert into tb_det_acumulado (id_servicio,id_cliente,flg_detalle,monto) 
+			values (_id_service,_id_cliente,2,in_monto_dscto);
+        end IF;        
+    END IF;
+    
+    
+    insert into tb_service (id_cliente,id_estilista,descripcion,precio,aplica_descuento,fecha)
+    values (_id_cliente,_id_estilista,in_descripcion,in_precio,in_acumula_dscto,now());
+	
+    select last_insert_id() into _id_service;
+
+    select _id_service as 'id', 'ok' as 'msg';
+    
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE `newUser`(
+IN in_num_documento CHAR(8),
+IN in_nombres VARCHAR(100),
+IN in_ape_pat VARCHAR(100),
+IN in_ape_mat VARCHAR(100),
+IN in_email VARCHAR(250),
+IN in_num_celular CHAR(9),
+IN in_id_referido CHAR(8),
+IN in_id_role INT,
+IN in_auth_pass VARCHAR(250)
+)
+BEGIN
+	
+    DECLARE cantidad_ INT;
+    
+    if in_num_documento is null then
+		select -1 as 'id', 'Ya existe un usuario con este número de documento' as 'msg';
+    end if;
+    
+    if in_nombres is null or in_nombres = '' then
+		select -1 as 'id', 'Por favor ingrese un nombre válido.' as 'msg';
+    end if;
+    
+    if in_ape_pat is null or in_ape_pat = '' then
+		select -1 as 'id', 'Por favor ingrese un apellido paterno válido.' as 'msg';
+    end if;
+    
+    if in_ape_mat is null or in_ape_mat = '' then
+		select -1 as 'id', 'Por favor ingrese un apellido materno válido.' as 'msg';
+    end if;
+    
+    if in_email is null or in_email = '' then
+		select -1 as 'id', 'Por favor ingrese un correo electrónico válido.' as 'msg';
+    end if;
+    
+    if in_num_celular is null or in_num_celular = '' then
+		select -1 as 'id', 'Por favor ingrese un número de celular válido.' as 'msg';
+    end if;
+    
+    if in_id_role is null or in_id_role = '' then
+		select -1 as 'id', 'Por favor ingrese un rol válido.' as 'msg';
+    end if;
+    
+    if in_id_referido is null or in_id_referido = '' then
+		set in_id_referido = '00000000';
+    end if;
+    
+    if in_auth_pass is null or in_auth_pass = '' then
+		select -1 as 'id', 'Por favor ingrese un clave válida.' as 'msg';
+    end if;
+    
+    
+    SELECT count(1) into cantidad_ FROM tb_cliente where num_documento=in_num_documento;
+    
+    IF cantidad_ > 0 then
+		select -1 as 'id', 'Ya existe un usuario con este número de documento' as 'msg';
+	ELSE
+		INSERT INTO tb_cliente (num_documento,nombres,ape_pat,ape_mat,email,num_celular,id_referido,id_role, auth_pass) 
+        VALUES(in_num_documento,in_nombres,in_ape_pat,in_ape_mat,in_email,in_num_celular,in_id_referido,in_id_role,in_auth_pass);
+        
+        select LAST_INSERT_ID() as 'id', 'El usuario fue creado de manera satisfactoria' as 'msg';
+    END IF;
+    
+END$$
+DELIMITER ;
